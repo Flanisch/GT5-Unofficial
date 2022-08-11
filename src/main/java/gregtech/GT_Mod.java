@@ -16,6 +16,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Radioactivity;
@@ -86,6 +87,11 @@ import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+
+import net.minecraft.client.resources.data.IMetadataSerializer;
+import gregtech.api.util.ColorsMetadataSection;
+import gregtech.api.util.ColorsMetadataSectionSerializer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -172,6 +178,8 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
+    @SideOnly(Side.CLIENT)
+    private final IMetadataSerializer metadataSerializer = new IMetadataSerializer();
 
     static {
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
@@ -219,6 +227,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+            this.metadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
