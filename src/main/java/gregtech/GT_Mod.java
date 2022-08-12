@@ -33,6 +33,8 @@ import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
+import gregtech.api.util.ColorsMetadataSection;
+import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
 import gregtech.api.util.GT_ItsNotMyFaultException;
@@ -88,10 +90,7 @@ import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
-import net.minecraft.client.resources.data.IMetadataSerializer;
-import gregtech.api.util.ColorsMetadataSection;
-import gregtech.api.util.ColorsMetadataSectionSerializer;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -178,9 +177,6 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
-    @SideOnly(Side.CLIENT)
-    private final IMetadataSerializer metadataSerializer = new IMetadataSerializer();
-
     static {
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION) || (509 != GT_OreDictUnificator.VERSION) || (509 != GT_Recipe.VERSION) || (509 != GT_Utility.VERSION) || (509 != GT_RecipeRegistrator.VERSION) || (509 != Element.VERSION) || (509 != Materials.VERSION) || (509 != OrePrefixes.VERSION)) {
             throw new GT_ItsNotMyFaultException("One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
@@ -227,7 +223,7 @@ public class GT_Mod implements IGT_Mod {
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-            this.metadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
+            Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());

@@ -2,8 +2,8 @@ package gregtech.api.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.resources.data.IMetadataSection;
 import gregtech.api.util.GT_Log;
+import net.minecraft.client.resources.data.IMetadataSection;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSection implements IMetadataSection {
@@ -15,14 +15,12 @@ public class ColorsMetadataSection implements IMetadataSection {
 
         int textColor = 0;
         try {
-            GT_Log.err.println("ColorsSerializer: Converting");
             if (!hexColor.isEmpty()) textColor = Integer.parseUnsignedInt(hexColor,16);
         }
         catch (final NumberFormatException e) {
             GT_Log.err.println("Couldn't format color correctly for: " + hexColor);
         }
-        GT_Log.err.println("ColorsSerializer: Converted: " + hexColor);
-
+        GT_Log.out.println("ColorsSerializer: Converted: " + hexColor); // Debug
         this.textColor = textColor;
     }
 

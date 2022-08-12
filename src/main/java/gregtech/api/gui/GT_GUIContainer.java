@@ -6,6 +6,12 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+import gregtech.api.util.ColorsMetadataSection;
+import gregtech.api.util.ColorsMetadataSectionSerializer;
+import java.io.IOException;
+import net.minecraft.client.resources.IResource;
+
+import gregtech.api.util.GT_Log;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
@@ -19,6 +25,8 @@ public class GT_GUIContainer extends GuiContainer {
     public boolean mCrashed = false;
 
     public ResourceLocation mGUIbackground;
+
+    public IResource mGUIbackgroundResource;
 
     public String mGUIbackgroundPath;
 
@@ -43,6 +51,14 @@ public class GT_GUIContainer extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
         mc.renderEngine.bindTexture(mGUIbackground);
+        try {
+            mGUIbackgroundResource = mc.getResourceManager().getResource(mGUIbackground);
+        }
+        catch (IOException ignore) {
+        }
+        if (mGUIbackgroundResource.hasMetadata()) {
+            ColorsMetadataSection cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
+        }
     }
 
     @Override

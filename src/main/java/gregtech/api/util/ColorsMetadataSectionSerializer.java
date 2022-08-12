@@ -10,21 +10,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.lang.reflect.Type;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.client.resources.data.BaseMetadataSectionSerializer;
-import gregtech.api.util.GT_Log;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer implements JsonSerializer {
     public ColorsMetadataSection deserialize(JsonElement mcmetaSection, Type type, JsonDeserializationContext context) {
         JsonObject jsonObject = JsonUtils.getJsonElementAsJsonObject(mcmetaSection, "metadata section");
         String hexColor = JsonUtils.getJsonObjectStringFieldValueOrDefault(jsonObject, "textColor", "");
-        GT_Log.err.println("ColorsSerializer: Deserialized");
         return new ColorsMetadataSection(hexColor);
     }
 
     public JsonElement serialize(ColorsMetadataSection colorsMetaSection, Type type, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("textColor", colorsMetaSection.getHexColor());
-        GT_Log.err.println("ColorsSerializer: Serialized");
         return jsonObject;
     }
 
