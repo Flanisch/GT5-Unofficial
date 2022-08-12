@@ -1,5 +1,6 @@
 package gregtech.api.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
@@ -10,6 +11,8 @@ import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import java.io.IOException;
 import net.minecraft.client.resources.IResource;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 import gregtech.api.util.GT_Log;
 
@@ -27,12 +30,24 @@ public class GT_GUIContainer extends GuiContainer {
     public ResourceLocation mGUIbackground;
 
     public IResource mGUIbackgroundResource;
+    public ColorsMetadataSection cmSection;
 
     public String mGUIbackgroundPath;
 
     public GT_GUIContainer(Container aContainer, String aGUIbackground) {
         super(aContainer);
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            try {
+                this.mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(this.mGUIbackground);
+            }
+            catch (IOException ignore) {
+            }
+            if (mGUIbackgroundResource.hasMetadata()) {
+                this.cmSection = (ColorsMetadataSection) this.mGUIbackgroundResource.getMetadata("colors");
+            }
+        }
     }
 
     public int getLeft() {
@@ -43,6 +58,13 @@ public class GT_GUIContainer extends GuiContainer {
         return guiTop;
     }
 
+     protected int getTextColor(String key, int defaultColor) {
+        if (cmSection != null && cmSection.sKeyInTextColors(key)) {
+            return cmSection.getTextColorOrDefault(key, defaultColor);
+        }
+        return defaultColor;
+    }
+
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         //
@@ -51,14 +73,6 @@ public class GT_GUIContainer extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float parTicks, int mouseX, int mouseY) {
         mc.renderEngine.bindTexture(mGUIbackground);
-        try {
-            mGUIbackgroundResource = mc.getResourceManager().getResource(mGUIbackground);
-        }
-        catch (IOException ignore) {
-        }
-        if (mGUIbackgroundResource.hasMetadata()) {
-            ColorsMetadataSection cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
-        }
     }
 
     @Override

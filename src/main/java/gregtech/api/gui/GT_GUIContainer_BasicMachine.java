@@ -168,7 +168,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRendererObj.drawString(mName, 8, 4, 4210752);
+        fontRendererObj.drawString(mName, 8, 4, this.getTextColor("title", 4210752));
     }
 
     @Override
