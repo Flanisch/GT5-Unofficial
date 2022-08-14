@@ -13,6 +13,7 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
         implements NEI_TransferRectHost {
     private String name;
     public String mNEI;
+    private final int colorTextTitle = this.getTextColorOrDefault("title", 0x404040);
     private final static GT_GuiTabIconSet TAB_ICONSET = new GT_GuiTabIconSet(
         GT_GuiIcon.TAB_NORMAL_BRICK,
         GT_GuiIcon.TAB_HIGHLIGHT_BRICK,
@@ -28,7 +29,7 @@ public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTi
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString(name, 8, 4, 4210752);
+        this.fontRendererObj.drawString(name, 8, 4, colorTextTitle);
     }
 
     @Override

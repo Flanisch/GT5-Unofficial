@@ -5,20 +5,33 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Map;
 import java.util.HashMap;
 import gregtech.api.util.GT_Log;
+import gregtech.api.GregTech_API;
 import net.minecraft.client.resources.data.IMetadataSection;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSection implements IMetadataSection {
     private final Map<String, Integer> textColors;
-    private final Map<String, String> hexColors;
+    private final Map<String, String> hexTextColors;
+    private final Map<String, Integer> guiTints;
+    private final Map<String, String> hexGuiTints;
+    private final boolean guiTintEnabled;
 
-    public ColorsMetadataSection(Map<String, String> hexColorMap) {
-        this.hexColors = hexColorMap;
-        Map<String, Integer> textColorMap = new HashMap<>();
+    public ColorsMetadataSection(Map<String, String> hexTextColorMap, Map<String, String> hexGuiTintMap, boolean guiTintEnabled) {
+        this.hexTextColors = hexTextColorMap;
+        this.textColors = convertHexMapToIntMap(hexTextColorMap);
 
-        for (String key : hexColors.keySet()) {
+        this.hexGuiTints = hexGuiTintMap;
+        this.guiTints = convertHexMapToIntMap(hexGuiTintMap);
+
+        this.guiTintEnabled = guiTintEnabled;
+    }
+
+    private Map<String, Integer> convertHexMapToIntMap(Map <String, String> hexMap) {
+        Map<String, Integer> intMap = new HashMap<>();
+
+        for (String key : hexMap.keySet()) {
             int colorValue = -1;
-            String hex = hexColors.get(key);
+            String hex = hexMap.get(key);
             try {
                 if (!hex.isEmpty()) colorValue = Integer.parseUnsignedInt(hex,16);
             }
@@ -26,18 +39,30 @@ public class ColorsMetadataSection implements IMetadataSection {
                 GT_Log.err.println("Couldn't format color correctly for: " + hex);
             }
             GT_Log.out.println("ColorsSerializer: Converted: " + hex + " -> " + colorValue); // Debug
-
-            textColorMap.put(key, colorValue);
+            intMap.put(key, colorValue);
         }
 
-        GT_Log.out.println("ColorsSerializer textColorMap: "); // Debug
-        GT_Log.out.println(textColorMap);
-        this.textColors = textColorMap;
+        GT_Log.out.println("ColorsSerializer intMap: "); // Debug
+        GT_Log.out.println(intMap);
+
+        return intMap;
     }
 
     public int getTextColorOrDefault(String key, int defaultColor) {
-        GT_Log.out.println("ColorsMetadataSection: key -> " + this.textColors.get(key));
-        return this.textColors.get(key) == -1 ? defaultColor : this.textColors.get(key);
+        return sColorInMap(key, this.hexTextColors) ? defaultColor : this.textColors.get(key);
+    }
+
+    public int getGuiTintOrDefault(String key, int defaultColor) {
+        return sColorInMap(key, this.hexGuiTints) ? defaultColor : this.guiTints.get(key);
+    }
+
+    private boolean sColorInMap(String key, Map<String,String> hexMap) {
+        return hexMap.containsKey(key) && hexMap.get(key).isEmpty();
+    }
+
+    public boolean sGuiTintingEnabled() {
+        if (!GregTech_API.sColoredGUI) return false;
+        return this.guiTintEnabled;
     }
 
     public boolean sKeyInTextColors(String key) {
@@ -45,10 +70,10 @@ public class ColorsMetadataSection implements IMetadataSection {
     }
 
     public Map<String, String> getHexColorMap() {
-        return this.hexColors;
+        return this.hexTextColors;
     }
 
     public String getHexColorOrDefault(String key, String defaultHex) {
-        return this.hexColors.get(key).isEmpty() ? defaultHex : this.hexColors.get(key);
+        return this.hexTextColors.get(key).isEmpty() ? defaultHex : this.hexTextColors.get(key);
     }
 }

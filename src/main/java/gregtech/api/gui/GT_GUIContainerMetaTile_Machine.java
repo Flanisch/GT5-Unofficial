@@ -16,6 +16,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import gregtech.api.util.GT_TooltipDataCache;
+import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Log;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import java.util.List;
@@ -50,6 +52,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         GT_GuiIcon.TAB_HIGHLIGHT,
         GT_GuiIcon.TAB_DISABLED);
 
+    private final int guiTint;
+
     public GT_GUIContainerMetaTile_Machine(GT_ContainerMetaTile_Machine aContainer, String aGUIbackground) {
         super(aContainer, aGUIbackground);
         mContainer = aContainer;
@@ -63,6 +67,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         if (GT_Mod.gregtechproxy.mTooltipVerbosity > 0 || GT_Mod.gregtechproxy.mTooltipShiftVerbosity > 0) {
             setupTooltips();
         }
+
+        guiTint = getColorization();
     }
 
     public GT_GUIContainerMetaTile_Machine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
@@ -86,7 +92,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
             preferredDisplayStyle,
             getTabBackground(),
             getMachine().getBaseMetaTileEntity(),
-            getColorization());
+            guiTint);
     }
 
     @Override
@@ -106,8 +112,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         coverTabs.drawTabs(parTicks, mouseX, mouseY);
 
         // Applying machine coloration, which subclasses rely on
-        Dyes color = getColorization();
-        GL11.glColor3ub((byte) color.mRGBa[0], (byte) color.mRGBa[1], (byte) color.mRGBa[2]);
+        GL11.glColor3ub((byte) ((guiTint >> 16) & 0xFF), (byte) ((guiTint >> 8) & 0xFF), (byte) (guiTint & 0xFF));
 
         // Binding machine's own texture, which subclasses rely on being set
         super.drawGuiContainerBackgroundLayer(parTicks, mouseX, mouseY);
@@ -116,20 +121,26 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
     /**
      * @return The color used to render this machine's GUI
      */
-    private Dyes getColorization() {
-        if (GregTech_API.sMachineMetalGUI) {
-            return Dyes.MACHINE_METAL;
-        } else if (GregTech_API.sColoredGUI && mContainer != null && mContainer.mTileEntity != null) {
-            byte colorByte = mContainer.mTileEntity.getColorization();
-            Dyes color;
-            if (colorByte != -1)
-                color = Dyes.get(colorByte);
-            else
-                color = Dyes.MACHINE_METAL;
-            return color;
-        } else {
-            return Dyes.dyeWhite;
+    private int getColorization() {
+        Dyes dye = Dyes.dyeWhite;
+        if (this.cmSection != null) {
+            if (this.cmSection.sGuiTintingEnabled()) {
+                dye = getDyeFromIndex(mContainer.mTileEntity.getColorization());
+                return this.cmSection.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+            }
         }
+        else if (GregTech_API.sColoredGUI) {
+            if (GregTech_API.sMachineMetalGUI) {
+                dye = Dyes.MACHINE_METAL;
+            } else if (mContainer != null && mContainer.mTileEntity != null) {
+                dye = getDyeFromIndex(mContainer.mTileEntity.getColorization());
+            }
+        }
+        return GT_Util.getRGBInt(dye.getRGBA());
+    }
+
+    private Dyes getDyeFromIndex(short index) {
+        return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
     }
 
     /**

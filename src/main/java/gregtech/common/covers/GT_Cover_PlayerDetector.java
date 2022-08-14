@@ -135,6 +135,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
         private int coverVariable;
 
         private static final int startX = 10;
@@ -160,11 +161,11 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
 			this.fontRendererObj.drawString(GT_Utility.trans("319", "Any player"),
-                    startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*0, colorText);
 			this.fontRendererObj.drawString(GT_Utility.trans("320", "Other players"),
-                    startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*1, colorText);
 			this.fontRendererObj.drawString(GT_Utility.trans("321", "Only owner"),
-                    startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
+                    startX + spaceX*1, 4+startY+spaceY*2, colorText);
         }
 
         @Override

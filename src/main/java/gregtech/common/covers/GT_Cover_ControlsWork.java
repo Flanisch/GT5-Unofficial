@@ -154,6 +154,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
         private int coverVariable;
 
         private static final int startX = 10;
@@ -177,10 +178,10 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior {
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("243", "Enable with Redstone"), 3+startX + spaceX*1, 4+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("244", "Disable with Redstone"),3+startX + spaceX*1, 4+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("245", "Disable machine"),              3+startX + spaceX*1, 4+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("507", "Safe Mode"), 3+startX + spaceX*1, 4+startY+spaceY*3, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("243", "Enable with Redstone"), 3+startX + spaceX*1, 4+startY+spaceY*0, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("244", "Disable with Redstone"),3+startX + spaceX*1, 4+startY+spaceY*1, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("245", "Disable machine"),              3+startX + spaceX*1, 4+startY+spaceY*2, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("507", "Safe Mode"), 3+startX + spaceX*1, 4+startY+spaceY*3, colorText);
         }
 
         @Override

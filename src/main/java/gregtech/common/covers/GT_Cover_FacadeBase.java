@@ -258,6 +258,7 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
         private FacadeData coverVariable;
 
         private static final int startX = 10;
@@ -280,10 +281,10 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("128", "Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("129", "Energy"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("130", "Fluids"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 2, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("131", "Items"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, 0xFF555555);
+            this.fontRendererObj.drawString(GT_Utility.trans("128", "Redstone"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 0, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("129", "Energy"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 1, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("130", "Fluids"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 2, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("131", "Items"), 3 + startX + spaceX * 1, 4 + startY + spaceY * 3, colorText);
         }
 
         @Override

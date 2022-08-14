@@ -270,6 +270,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
         private final GT_GuiIconCheckButton invertedButton;
         private final GT_GuiIntegerTextBox intSlot;
         private final GT_GuiFakeItemButton intSlotIcon;
@@ -317,9 +318,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, 0xFF555555);
+            this.getFontRenderer().drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 3, 4 + startY, colorText);
+			this.getFontRenderer().drawString(GT_Utility.trans("254", "Detect slot#"), startX + spaceX * 3, 4 + startY + spaceY, colorText);
+			this.getFontRenderer().drawString(GT_Utility.trans("221", "Item threshold"), startX + spaceX * 3, startY + spaceY * 2 + 4, colorText);
         }
 
         @Override

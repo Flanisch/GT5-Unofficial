@@ -7,14 +7,18 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_MaintenanceHatch extends GT_GUIContainerMetaTile_Machine {
 
+    private final int
+        colorText = this.getTextColorOrDefault("text", 0x404040),
+        colorTextTitle = this.getTextColorOrDefault("title", 0x404040);
+
     public GT_GUIContainer_MaintenanceHatch(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_MaintenanceHatch(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Maintenance.png");
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString("Maintenance Hatch", 8, 4, 4210752);
-        fontRendererObj.drawString("Click with Tool to repair.", 8, 12, 4210752);
+        fontRendererObj.drawString("Maintenance Hatch", 8, 4, colorTextTitle);
+        fontRendererObj.drawString("Click with Tool to repair.", 8, 12, colorText);
     }
 
     @Override

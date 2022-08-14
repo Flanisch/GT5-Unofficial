@@ -26,6 +26,7 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 	// the currently selected slot content
 	private final GT_GuiFakeItemButton btnCurrent = new GT_GuiFakeItemButton(this, 8, 25, GT_GuiIcon.SLOT_DARKGRAY).setMimicSlot(true);
 	private final boolean noDeselect;
+    private final int colorText = this.getTextColorOrDefault("text",0xff555555);
 	private int selected;
 	private int scroll = 0;
 	private GT_GuiIconButton btnUp;
@@ -103,7 +104,7 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 	@Override
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {
 		int y = 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2;
-		getFontRenderer().drawString(StatCollector.translateToLocal("GT5U.gui.select.current"), 8, y, 0xff555555);
+		getFontRenderer().drawString(StatCollector.translateToLocal("GT5U.gui.select.current"), 8, y, colorText);
 		super.drawExtras(mouseX, mouseY, parTicks);
 	}
 

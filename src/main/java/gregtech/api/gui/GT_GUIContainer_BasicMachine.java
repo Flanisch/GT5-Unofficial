@@ -62,6 +62,10 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
         POWER_SOURCE_KEY = "GT5U.machines.powersource.";
 
+    private final int
+        colorText = this.getTextColorOrDefault("text", 0x404040),
+        colorTextTitle = this.getTextColorOrDefault("title", 0x404040);
+
     public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
             String aTextureFile, String aNEI) {
         this(aInventoryPlayer, aTileEntity, aName, aTextureFile, aNEI, (byte) 0, (byte) 1);
@@ -168,7 +172,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRendererObj.drawString(mName, 8, 4, this.getTextColor("title", 4210752));
+        fontRendererObj.drawString(mName, 8, 4, colorTextTitle);
     }
 
     @Override

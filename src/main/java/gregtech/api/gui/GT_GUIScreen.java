@@ -1,5 +1,8 @@
 package gregtech.api.gui;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.widgets.GT_GuiFakeItemButton;
 import gregtech.api.gui.widgets.GT_GuiIntegerTextBox;
@@ -7,17 +10,21 @@ import gregtech.api.gui.widgets.GT_GuiTooltip;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IGuiScreen;
+import gregtech.api.util.ColorsMetadataSection;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +40,9 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	public String header;
 	public GT_GuiFakeItemButton headerIcon;
 
+    private ResourceLocation mGUIbackgroundLocation;
+    public ColorsMetadataSection cmSection;
+    private final int textColorTitle = getTextColorOrDefault("title", 0xFF222222);
 
 	protected List<IGuiElement> elements = new ArrayList<>();
 	protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
@@ -42,6 +52,11 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 		this.gui_height = height;
 		this.header = header;
 		this.headerIcon = new GT_GuiFakeItemButton(this, 5, 5, null);
+        this.mGUIbackgroundLocation = new ResourceLocation("gregtech:textures/gui/GuiCover.png");
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            loadTextureMetaData();
+        }
 	}
 
 	@Override
@@ -65,6 +80,24 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	}
 
 	protected abstract void onInitGui(int guiLeft, int guiTop, int gui_width, int gui_height);
+
+    private void loadTextureMetaData() {
+        try {
+            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(mGUIbackgroundLocation);
+            if (mGUIbackgroundResource.hasMetadata()) {
+                cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
+            }
+        }
+        catch (IOException ignore) {
+        }
+    }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        if (cmSection != null && cmSection.sKeyInTextColors(textType)) {
+            return cmSection.getTextColorOrDefault(textType, defaultColor);
+        }
+        return defaultColor;
+    }
 
 	public void onMouseWheel(int x, int y, int delta) {
 	}
@@ -120,12 +153,12 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
 	public void drawBackground(int mouseX, int mouseY, float parTicks) {
 		short[] color = Dyes.MACHINE_METAL.getRGBA();
 		GL11.glColor3ub((byte) color[0], (byte) color[1], (byte) color[2]);
-		this.mc.renderEngine.bindTexture(new ResourceLocation("gregtech:textures/gui/GuiCover.png"));
+		this.mc.renderEngine.bindTexture(mGUIbackgroundLocation);
 		drawTexturedModalRect(guiLeft, guiTop, 0,0, gui_width, gui_height);
 	}
 
 	public void drawExtras(int mouseX, int mouseY, float parTicks) {
-		this.fontRendererObj.drawString(header, 25, 9, 0xFF222222);
+		this.fontRendererObj.drawString(header, 25, 9, textColorTitle);
 	}
 
 	@Override

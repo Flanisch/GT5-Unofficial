@@ -128,8 +128,16 @@ public class GT_Util {
         return aColors == null ? 16777215 : (aColors[0] << 16) | (aColors[1] << 8) | aColors[2];
     }
 
+    public static String getRGBHex(short[] aColors) {
+        return aColors == null ? "FFFFFF" : Integer.toString((aColors[0] << 16) | (aColors[1] << 8) | aColors[2], 16);
+    }
+
     public static int getRGBaInt(short[] aColors) {
         return aColors == null ? 16777215 : (aColors[0]) << 16 | (aColors[1] << 8) | aColors[2] | (aColors[3] << 24);
+    }
+
+    public static String geRGBaHex(short[] aColors) {
+        return aColors == null ? "FFFFFF" : Integer.toString((aColors[0] << 16) | (aColors[1] << 8) | aColors[2] | (aColors[3] << 24), 16);
     }
 
     public static int getRGBInt(short aR, short aG, short aB) {

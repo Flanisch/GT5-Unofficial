@@ -20,6 +20,7 @@ import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.objects.ItemData;
+import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -32,9 +33,11 @@ import gregtech.common.power.UnspecifiedEUPower;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.Range;
 import org.lwjgl.opengl.GL11;
@@ -42,6 +45,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,6 +70,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     private String mRecipeName; // Name of the handler displayed on top
     private NEIHandlerAbsoluteTooltip mRecipeNameTooltip;
     private static final int RECIPE_NAME_WIDTH = 140;
+    private int overrideTextColor = -1;
 
      /**
      * Static version of {@link TemplateRecipeHandler#cycleticks}.
@@ -117,8 +122,8 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         return cache;
     }
 
-    public static void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
+    public void drawText(int aX, int aY, String aString, int aColor) {
+        Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, overrideTextColor != -1 ? overrideTextColor : aColor);
     }
 
     @Override
@@ -258,6 +263,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public String getRecipeName() {
         if (mRecipeName == null) {
             mRecipeName = computeRecipeName();
+            overrideTextColor = getOverrideTextColor();
         }
         return mRecipeName;
     }
@@ -268,6 +274,20 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             recipeName = addSuffixToRecipeName(recipeName, mPower.getTierString() + ")");
         }
         return recipeName;
+    }
+
+    private int getOverrideTextColor() {
+        int neiTextColor = -1;
+        try {
+            IResource mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(this.mRecipeMap.mNEIGUIPath));
+            if (mGUIbackgroundResource.hasMetadata()) {
+                ColorsMetadataSection cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
+                if (cmSection != null) neiTextColor = cmSection.getTextColorOrDefault("nei",-1);
+            }
+        }
+        catch (IOException ignore) {
+        }
+        return neiTextColor;
     }
 
     private String addSuffixToRecipeName(final String aRecipeName, final String suffix) {
@@ -402,7 +422,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
                 drawLine(lineCounter, GT_Utility.trans("155", "Amperage: ") + amperage);
                 lineCounter++;
             }
-
         }
         if (mPower.getDurationTicks() > 0) {
             if(GT_Mod.gregtechproxy.mNEIRecipeSecondMode) {
@@ -520,7 +539,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     }
 
     protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
+        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, overrideTextColor != -1 ? overrideTextColor : 0xFF000000);
     }
 
     protected int getDescriptionYOffset() {

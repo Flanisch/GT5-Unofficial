@@ -11,6 +11,10 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 public class GT_GUIContainer_QuantumChest extends GT_GUIContainerMetaTile_Machine {
 
     private final String mName;
+    private final int
+        colorText = this.getTextColorOrDefault("text", 0xFAFAFF),
+        colorTextTitle = this.getTextColorOrDefault("title", 0x404040),
+        colorTextValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
     public GT_GUIContainer_QuantumChest(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(new GT_Container_QuantumChest(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "BasicTank.png");
@@ -19,11 +23,11 @@ public class GT_GUIContainer_QuantumChest extends GT_GUIContainerMetaTile_Machin
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
-        fontRendererObj.drawString(mName, 8, 6, 4210752);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, colorTextTitle);
+        fontRendererObj.drawString(mName, 8, 6, colorTextTitle);
         if (mContainer != null) {
-            fontRendererObj.drawString("Item Amount", 10, 20, 16448255);
-            fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_QuantumChest) mContainer).mContent), 10, 30, 16448255);
+            fontRendererObj.drawString("Item Amount", 10, 20, colorText);
+            fontRendererObj.drawString(GT_Utility.parseNumberToString(((GT_Container_QuantumChest) mContainer).mContent), 10, 30, colorTextValue);
         }
     }
 

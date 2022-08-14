@@ -195,6 +195,9 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     private class GT_FluidFilterGUICover extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int
+            colorText = this.getTextColorOrDefault("text", 0xFF555555),
+            colorTextValue = this.getTextColorOrDefault("text", 0xFF222222);
         private final FluidFilterData coverVariable;
         private final GT_GuiFakeItemButton fluidFilterButton;
         protected String fluidFilterName;
@@ -259,10 +262,10 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),   startX + spaceX*2, 3+startY+spaceY*0, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, 0xFF555555);
-            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, 0xFF555555);
-            this.fontRendererObj.drawSplitString(fluidFilterName,                                startX + spaceX+3, 4+startY+spaceY*3, gui_width-40 , 0xFF222222);
+            this.fontRendererObj.drawString(GT_Utility.trans("238", "Filter Direction"),   startX + spaceX*2, 3+startY+spaceY*0, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("239", "Filter Type"),        startX + spaceX*2, 3+startY+spaceY*1, colorText);
+            this.fontRendererObj.drawString(GT_Utility.trans("240", "Block Flow"),          startX + spaceX*2, 3+startY+spaceY*2, colorText);
+            this.fontRendererObj.drawSplitString(fluidFilterName, startX + spaceX+3, 4+startY+spaceY*3, gui_width-40, colorTextValue);
         }
 
         @Override

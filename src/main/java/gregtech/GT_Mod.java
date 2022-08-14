@@ -33,8 +33,6 @@ import gregtech.api.objects.ReverseShapedRecipe;
 import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.util.ColorsMetadataSection;
-import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
 import gregtech.api.util.GT_ItsNotMyFaultException;
@@ -58,7 +56,6 @@ import gregtech.common.misc.GT_Command;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.Harvestcraft;
 import gregtech.crossmod.Waila;
-import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
@@ -219,11 +216,6 @@ public class GT_Mod implements IGT_Mod {
             } catch (Throwable e) {
                 e.printStackTrace(GT_Log.err);
             }
-        }
-
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            MinecraftForge.EVENT_BUS.register(new ExtraIcons());
-            Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         }
 
         Configuration tMainConfig = GT_PreLoad.getConfiguration(aEvent.getModConfigurationDirectory());

@@ -18,6 +18,9 @@ import java.util.Arrays;
 
 public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Machine {
 
+    private final int
+        colorText = this.getTextColorOrDefault("text", 0x404040),
+        colorTextTitle = this.getTextColorOrDefault("title", 0x404040);
 
     private static final String
         BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
@@ -115,9 +118,9 @@ public class GT_GUIContainer_IndustrialApiary extends GT_GUIContainerMetaTile_Ma
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, 4210752);
-        this.fontRendererObj.drawString("x", 30, 63, 4210752);
-        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, 4210752);
+        this.fontRendererObj.drawString("Ind. Apiary", 8, 4, colorTextTitle);
+        this.fontRendererObj.drawString("x", 30, 63, colorText);
+        this.fontRendererObj.drawString((1 << getContainer().mSpeed) + "", 26, 72, colorText);
     }
 
     @Override

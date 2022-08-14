@@ -30,6 +30,8 @@ import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.ColorsMetadataSection;
+import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_PlayedSound;
@@ -41,6 +43,7 @@ import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
+import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
@@ -57,6 +60,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
@@ -399,6 +403,10 @@ public class GT_Client extends GT_Proxy
     @Override
     public void onPreLoad() {
         super.onPreLoad();
+
+        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer.registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
+
         final String[] arr = {
                 "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321", "Goshen_Ithilien", "manf", "Bimgo", "leagris",
                 "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87", "BadAlchemy", "CaballoCraft", "melanclock", "Resursator", "demanzke", "AndrewAmmerlaan",

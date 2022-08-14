@@ -240,6 +240,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         private static final int spaceY = 18;
 
         private final String ANY_TEXT = GT_Utility.trans("ANY", "Any");
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
 
         private boolean export;
         private int internalSlotID, adjacentSlotID;
@@ -288,12 +289,12 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
             if (export)
-                this.getFontRenderer().drawString(GT_Utility.trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("006", "Export"),  startX + spaceX*3, 4+startY+spaceY*0, colorText);
             else
-                this.getFontRenderer().drawString(GT_Utility.trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, 0xFF555555);
+                this.getFontRenderer().drawString(GT_Utility.trans("007", "Import"),  startX + spaceX*3, 4+startY+spaceY*0, colorText);
 
-            this.getFontRenderer().drawString(GT_Utility.trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, 0xFF555555);
+            this.getFontRenderer().drawString(GT_Utility.trans("254", "Internal slot#"),     startX + spaceX*3, 4+startY+spaceY*1, colorText);
+            this.getFontRenderer().drawString(GT_Utility.trans("255", "Adjacent slot#"),  startX + spaceX*3, 4+startY+spaceY*2, colorText);
         }
 
         @Override

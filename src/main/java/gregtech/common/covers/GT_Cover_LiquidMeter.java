@@ -217,6 +217,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     private class GUI extends GT_GUICover {
         private final byte side;
         private final int coverID;
+        private final int colorText = this.getTextColorOrDefault("text", 0xFF555555);
         private final GT_GuiIconCheckButton invertedButton;
         private final GT_GuiIntegerTextBox thresholdSlot;
         private final LiquidMeterData coverVariable;
@@ -254,8 +255,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public void drawExtras(int mouseX, int mouseY, float parTicks) {
             super.drawExtras(mouseX, mouseY, parTicks);
-            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, 0xFF555555);
-            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, 0xFF555555);
+            this.fontRendererObj.drawString(coverVariable.inverted ? INVERTED : NORMAL, startX + spaceX * 1, 4 + startY + spaceY * 0, colorText);
+            this.getFontRenderer().drawString(GT_Utility.trans("222", "Fluid threshold"), startX + spaceX * 5 - 10, startY + spaceY * 1 + 4, colorText);
         }
 
         @Override

@@ -13,6 +13,7 @@ import java.io.IOException;
 import net.minecraft.client.resources.IResource;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import gregtech.api.util.GT_Log;
 
@@ -39,14 +40,7 @@ public class GT_GUIContainer extends GuiContainer {
         mGUIbackground = new ResourceLocation(mGUIbackgroundPath = aGUIbackground);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            try {
-                this.mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(this.mGUIbackground);
-            }
-            catch (IOException ignore) {
-            }
-            if (mGUIbackgroundResource.hasMetadata()) {
-                this.cmSection = (ColorsMetadataSection) this.mGUIbackgroundResource.getMetadata("colors");
-            }
+            loadTextureMetaData();
         }
     }
 
@@ -58,9 +52,21 @@ public class GT_GUIContainer extends GuiContainer {
         return guiTop;
     }
 
-     protected int getTextColor(String key, int defaultColor) {
-        if (cmSection != null && cmSection.sKeyInTextColors(key)) {
-            return cmSection.getTextColorOrDefault(key, defaultColor);
+    private void loadTextureMetaData() {
+        try {
+            mGUIbackgroundResource = Minecraft.getMinecraft().getResourceManager().getResource(mGUIbackground);
+        }
+        catch (IOException ignore) {
+        }
+
+        if (mGUIbackgroundResource.hasMetadata()) {
+            cmSection = (ColorsMetadataSection) mGUIbackgroundResource.getMetadata("colors");
+        }
+    }
+
+    protected int getTextColorOrDefault(String textType, int defaultColor) {
+        if (cmSection != null && cmSection.sKeyInTextColors(textType)) {
+            return cmSection.getTextColorOrDefault(textType, defaultColor);
         }
         return defaultColor;
     }

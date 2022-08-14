@@ -346,6 +346,9 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 	private class GUI extends GT_GUICover {
 		private final byte side;
 		private final int coverID;
+        private final int
+            colorText = this.getTextColorOrDefault("text", 0xFF555555),
+            colorTextValue = this.getTextColorOrDefault("value", 0xFFFF0000);
 		private GT_GuiIntegerTextBox tBox, lBox;
 		private FluidRegulatorData coverVariable;
 
@@ -390,11 +393,11 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 		@Override
 		public void drawExtras(int mouseX, int mouseY, float parTicks) {
 			super.drawExtras(mouseX, mouseY, parTicks);
-			this.getFontRenderer().drawString(GT_Utility.trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, 0xFF555555);
-			this.getFontRenderer().drawString(String.format(GT_Utility.trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? 0xffff0000 : 0xff555555);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Import/Export"), startX + spaceX * 4, 4 + startY + spaceY * 0, colorText);
+			this.getFontRenderer().drawString(GT_Utility.trans("229", "Conditional"), startX + spaceX * 4, 4 + startY + spaceY * 1, colorText);
+			this.getFontRenderer().drawString(GT_Utility.trans("208", " L"), startX + spaceX * 4, 4 + startY + spaceY * 2, colorText);
+			this.getFontRenderer().drawString(GT_Utility.trans("209", " ticks"), startX + spaceX * 7, 4 + startY + spaceY * 2, colorText);
+			this.getFontRenderer().drawString(String.format(GT_Utility.trans("210", "Average: %.2f L/sec"), coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate), startX + spaceX * 0, 4 + startY + spaceY * 3, warn ? 0xffff0000 : colorText);
 		}
 
 		@Override
